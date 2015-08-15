@@ -31,8 +31,4 @@ You can refer to [this](http://shuaihuang.github.io/2015/08/15/opencv-deployment
 ```
 FaceAlignmentAuxiliary.exe <referenceImg>
 ```
-<<<<<<< HEAD
 - `<referenceImg>`: the image referred for alignment.
-=======
-- <referenceImg>: the image referred for alignment.
->>>>>>> 439074925d93a6d4942faa0d0c3444624b427ddc
