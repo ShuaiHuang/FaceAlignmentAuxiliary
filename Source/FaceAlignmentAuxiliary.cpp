@@ -10,6 +10,24 @@ Mat getMask(Mat &_inputImg)
 	return retImg;
 }
 
+Mat getColorMask(Mat &_mask, Scalar color)
+{
+	Mat colorMask = Mat(_mask.size(), CV_8UC3);
+	if (_mask.channels() == 1)
+	{
+		colorMask.setTo(Scalar(0, 0, 0));
+		vector<Mat> vecColorMask;
+		split(colorMask, vecColorMask);
+		for (int channel = 0; channel < 3; channel++)
+		{
+			_mask.copyTo(vecColorMask[channel]);
+			vecColorMask[channel] = vecColorMask[channel] / 255 * color(channel);
+		}
+		merge(vecColorMask, colorMask);
+	}
+	return colorMask;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	if (argc != 2)
@@ -20,12 +38,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	string faceFile(argv[1]);
 	Mat faceImg = imread(faceFile);
 	Mat faceMask = getMask(faceImg);
-	Mat colorMask = Mat(faceMask.size(), CV_8UC3);
-	colorMask.setTo(Scalar(0, 0, 0));
-	vector<Mat> vecColorMask;
-	split(colorMask, vecColorMask);
-	faceMask.copyTo(vecColorMask[1]);
-	merge(vecColorMask, colorMask);
+	Mat colorMask = getColorMask(faceMask, Scalar(255, 255, 255));
 
 	VideoCapture capture(0); // open the default camera
 	if (!capture.isOpened())  // check if we succeeded
